@@ -15,8 +15,7 @@ import java.util.EventListener
 class ScalaWebSocket(url: String = null) {
   def connect(url: String = this.url): Unit = {
     val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
-    println(hasWSProtocol)
-    hasWSProtocol.toString
+    if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
   }
 
   private def hasWebSocketProtocol(url: String): Boolean = {
