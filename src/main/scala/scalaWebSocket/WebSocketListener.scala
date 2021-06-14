@@ -32,4 +32,7 @@ case class WebSocketListener() extends Listener {
     super.onClose(webSocket, statusCode, reason)
   }
 
+  override def onError(webSocket: WebSocket, error: Throwable): Unit = {
+    super.onError(webSocket, error)
+  }
 }
