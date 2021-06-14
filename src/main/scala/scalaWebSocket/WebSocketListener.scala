@@ -27,4 +27,9 @@ case class WebSocketListener() extends Listener {
   override def onPong(webSocket: WebSocket, message: ByteBuffer): CompletionStage[_] = {
     super.onPong(webSocket, message)
   }
+
+  override def onClose(webSocket: WebSocket, statusCode: Int, reason: String): CompletionStage[_] = {
+    super.onClose(webSocket, statusCode, reason)
+  }
+
 }
