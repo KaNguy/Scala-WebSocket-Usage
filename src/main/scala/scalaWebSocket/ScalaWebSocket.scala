@@ -14,11 +14,21 @@ import java.util.EventListener
 
 class ScalaWebSocket(url: String = null) {
   def connect(url: String = this.url): Unit = {
-    val protocol: String = ""
-    protocol.toString
+    val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
+    println(hasWSProtocol)
+    hasWSProtocol.toString
+  }
+
+  private def hasWebSocketProtocol(url: String): Boolean = {
+    val webSocketURL: String = url.toLowerCase.trim.replaceAll(" ", "")
+    if (webSocketURL.substring(0, 2).equals("ws") || webSocketURL.substring(0, 3).equals("wss")) {
+      true
+    } else {
+      false
+    }
   }
 }
 
 object ScalaWebSocket extends App {
-  println(new ScalaWebSocket().connect("wss://localhost:8080"))
+  new ScalaWebSocket().connect("wss://localhost:8080")
 }
