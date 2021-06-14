@@ -15,5 +15,7 @@ case class WebSocketListener() extends Listener {
     super.onOpen(webSocket)
   }
 
-  //override def onText(webSocket: WebSocket, data: CharSequence, last: Boolean):
+  override def onText(webSocket: WebSocket, data: CharSequence, last: Boolean): CompletionStage[_] = {
+    super.onText(webSocket, data, last)
+  }
 }
