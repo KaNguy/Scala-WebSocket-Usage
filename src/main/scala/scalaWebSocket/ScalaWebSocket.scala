@@ -12,6 +12,8 @@ import java.nio.ByteBuffer
 import java.util.concurrent.CompletionStage
 import java.util.EventListener
 
-class ScalaWebSocket {
+class ScalaWebSocket(url: String) {
+  def connect(url: String = this.url): Unit = {
 
+  }
 }
