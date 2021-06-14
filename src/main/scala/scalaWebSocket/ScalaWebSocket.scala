@@ -12,8 +12,13 @@ import java.nio.ByteBuffer
 import java.util.concurrent.CompletionStage
 import java.util.EventListener
 
-class ScalaWebSocket(url: String) {
+class ScalaWebSocket(url: String = null) {
   def connect(url: String = this.url): Unit = {
-
+    val protocol: String = ""
+    protocol.toString
   }
+}
+
+object ScalaWebSocket extends App {
+  println(new ScalaWebSocket().connect("wss://localhost:8080"))
 }
