@@ -5,10 +5,15 @@ package scalaWebSocket
  * File scalaWebSocket.WebSocketListener.scala
  */
 
+// Networking & web
 import java.net.http.{HttpClient, HttpHeaders, HttpRequest, HttpResponse, WebSocket}
 import java.net.http.WebSocket.{Builder, Listener}
 import java.net.URI
+
+// New I/O
 import java.nio.ByteBuffer
+
+// Utilities
 import java.util.concurrent.CompletionStage
 
 case class WebSocketListener() extends Listener {
