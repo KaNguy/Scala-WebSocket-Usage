@@ -10,5 +10,9 @@ import java.net.http.WebSocket.{Listener, Builder}
 import java.net.URI
 
 case class WebSocketListener() extends Listener {
+  override def onOpen(webSocket: WebSocket): Unit = {
+    super.onOpen(webSocket)
+  }
 
+  //override def onText(webSocket: WebSocket, data: CharSequence, last: Boolean):
 }
