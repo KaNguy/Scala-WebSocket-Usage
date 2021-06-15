@@ -23,4 +23,5 @@ trait WebSocketDispatch extends EventListener {
   def onPing(webSocket: WebSocket, message: ByteBuffer): CompletionStage[_]
   def onPong(webSocket: WebSocket, message: ByteBuffer): CompletionStage[_]
   def onClose(webSocket: WebSocket, statusCode: Int, reason: String): CompletionStage[_]
+  def onError(webSocket: WebSocket, error: Throwable): Unit
 }
