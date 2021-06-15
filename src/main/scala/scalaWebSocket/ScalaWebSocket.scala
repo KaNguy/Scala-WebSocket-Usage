@@ -19,6 +19,7 @@ import java.util.EventListener
 
 // Local
 import scalaWebSocket.WebSocketListener
+import scalaWebSocket.WebSocketDispatch
 
 class ScalaWebSocket(url: String = null) {
   def connect(url: String = this.url, listener: Listener = new WebSocketListener()): Unit = {
