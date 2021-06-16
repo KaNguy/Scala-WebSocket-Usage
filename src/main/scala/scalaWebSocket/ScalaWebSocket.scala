@@ -8,7 +8,8 @@ package scalaWebSocket
 // Networking & Web
 import java.net.http.{HttpClient, HttpHeaders, HttpRequest, HttpResponse, WebSocket}
 import java.net.http.WebSocket.{Builder, Listener}
-import java.net.{URI, ConnectException}
+import java.net.{ConnectException, URI}
+import java.util.concurrent.CompletableFuture
 
 // New I/O
 import java.nio.ByteBuffer
@@ -41,6 +42,15 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
       this.webSocket.sendClose(statusCode, reason)
     } catch {
       case error: Throwable => error.printStackTrace()
+    }
+  }
+
+  def ping(message: ByteBuffer): CompletableFuture[WebSocket] = {
+    try {
+      this.webSocket.sendPing(message)
+    } catch {
+      case error: Throwable => error.printStackTrace()
+      new CompletableFuture[WebSocket]()
     }
   }
 
