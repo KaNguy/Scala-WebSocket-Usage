@@ -54,6 +54,24 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
     }
   }
 
+  def pong(message: ByteBuffer): CompletableFuture[WebSocket] = {
+    try {
+      this.webSocket.sendPong(message)
+    } catch {
+      case error: Throwable => error.printStackTrace()
+        new CompletableFuture[WebSocket]()
+    }
+  }
+
+  def sendBinary(data: ByteBuffer, last: Boolean): CompletableFuture[WebSocket] = {
+    try {
+      this.webSocket.sendBinary(data, last)
+    } catch {
+      case error: Throwable => error.printStackTrace()
+        new CompletableFuture[WebSocket]()
+    }
+  }
+
   private def hasWebSocketProtocol(url: String): Boolean = {
     val webSocketURL: String = url.toLowerCase.trim.replaceAll(" ", "")
     if (webSocketURL.substring(0, 2).equals("ws") || webSocketURL.substring(0, 3).equals("wss")) {
