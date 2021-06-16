@@ -28,9 +28,17 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
   private val httpClient: HttpClient = HttpClient.newHttpClient()
   private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
 
-  def sendText(data: CharSequence, last: Boolean): Unit = {
+  def send(data: CharSequence, last: Boolean): Unit = {
     try {
       this.webSocket.sendText(data, last)
+    } catch {
+      case error: Throwable => error.printStackTrace()
+    }
+  }
+
+  def close(statusCode: Int, reason: String): Unit = {
+    try {
+      this.webSocket.sendClose(statusCode, reason)
     } catch {
       case error: Throwable => error.printStackTrace()
     }
