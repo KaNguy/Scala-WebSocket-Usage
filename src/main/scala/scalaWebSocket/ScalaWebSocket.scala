@@ -22,7 +22,7 @@ import scalaWebSocket.WebSocketListener
 import scalaWebSocket.WebSocketDispatch
 
 class ScalaWebSocket(url: String = null, listener: Listener = new WebSocketListener()) {
-  val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
+  private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
   val httpClient: HttpClient = HttpClient.newHttpClient()
