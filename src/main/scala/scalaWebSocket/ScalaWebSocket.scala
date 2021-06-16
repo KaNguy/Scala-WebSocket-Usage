@@ -25,9 +25,10 @@ class ScalaWebSocket(url: String = null, listener: Listener = new WebSocketListe
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
-  val httpClient: HttpClient = HttpClient.newHttpClient()
+  private val httpClient: HttpClient = HttpClient.newHttpClient()
+  var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
   try {
-    val webSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join
+    webSocket
   } catch {
     case connectExeception: ConnectException => {
       throw connectExeception
