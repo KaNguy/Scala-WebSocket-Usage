@@ -22,20 +22,18 @@ import scalaWebSocket.WebSocketListener
 import scalaWebSocket.WebSocketDispatch
 
 class ScalaWebSocket(url: String = null, listener: Listener = new WebSocketListener()) {
-  def connect(url: String = this.url, listener: Listener = new WebSocketListener()): Unit = {
-    val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
-    if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
+  val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
+  if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
-    val httpClient: HttpClient = HttpClient.newHttpClient()
-    try {
-      val webSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join
-    } catch {
-      case connectExeception: ConnectException => {
-        throw connectExeception
-      }
-      case interrupted: InterruptedException => {
-        throw interrupted
-      }
+  val httpClient: HttpClient = HttpClient.newHttpClient()
+  try {
+    val webSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join
+  } catch {
+    case connectExeception: ConnectException => {
+      throw connectExeception
+    }
+    case interrupted: InterruptedException => {
+      throw interrupted
     }
   }
 
@@ -50,5 +48,5 @@ class ScalaWebSocket(url: String = null, listener: Listener = new WebSocketListe
 }
 
 object ScalaWebSocket extends App {
-  new ScalaWebSocket().connect("wss://echo.websocket.org")
+  new ScalaWebSocket("wss://echo.websocket.org")
 }
