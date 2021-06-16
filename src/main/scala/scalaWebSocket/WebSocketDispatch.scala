@@ -14,10 +14,7 @@ import java.nio.ByteBuffer
 // Utilities
 import java.util.concurrent.CompletionStage
 
-// Utilities
-import java.util.EventListener
-
-trait WebSocketDispatch extends EventListener {
+trait WebSocketDispatch extends WebSocket.Listener {
   def onOpen(webSocket: WebSocket): Unit
   def onText(webSocket: WebSocket, data: CharSequence, last: Boolean): CompletionStage[_]
   def onPing(webSocket: WebSocket, message: ByteBuffer): CompletionStage[_]
