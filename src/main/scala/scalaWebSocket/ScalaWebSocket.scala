@@ -81,14 +81,3 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
     }
   }
 }
-
-object ScalaWebSocket extends App {
-  val listener: Listener = new Listener {
-    override def onOpen(webSocket: WebSocket): Unit = {
-      println("WebSocket connection opened")
-      super.onOpen(webSocket)
-    }
-  }
-
-  val ws = new ScalaWebSocket("wss://echo.websocket.org", listener)
-}
