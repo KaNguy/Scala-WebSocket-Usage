@@ -48,5 +48,5 @@ class ScalaWebSocket(url: String = null, listener: Listener = new WebSocketListe
 }
 
 object ScalaWebSocket extends App {
-  new ScalaWebSocket("wss://echo.websocket.org")
+  val ws = new ScalaWebSocket("wss://echo.websocket.org")
 }
