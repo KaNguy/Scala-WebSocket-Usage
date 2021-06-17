@@ -37,7 +37,7 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
     }
   }
 
-  def close(statusCode: Int, reason: String): Unit = {
+  def close(statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String): Unit = {
     try {
       this.webSocket.sendClose(statusCode, reason)
     } catch {
