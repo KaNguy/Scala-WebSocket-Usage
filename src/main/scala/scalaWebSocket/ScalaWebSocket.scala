@@ -15,31 +15,35 @@ import java.util.concurrent.CompletableFuture
 import java.nio.ByteBuffer
 
 // Utilities
-import java.util.concurrent.CompletionStage
+import java.util.concurrent.{CompletionStage, CountDownLatch, TimeUnit}
 import java.util.EventListener
 
 // Local
 import scalaWebSocket.WebSocketListener
 import scalaWebSocket.WebSocketDispatch
 
-class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener()) {
+class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
+
+  private val latch: CountDownLatch = new CountDownLatch(1)
 
   private val httpClient: HttpClient = HttpClient.newHttpClient()
   private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
 
-  def send(data: CharSequence, last: Boolean): Unit = {
+  def send(data: CharSequence, last: Boolean, timeout: Int = 1000): Unit = {
     try {
       this.webSocket.sendText(data, last)
+      latch.await(timeout, TimeUnit.MILLISECONDS)
     } catch {
       case error: Throwable => error.printStackTrace()
     }
   }
 
-  def close(statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String): Unit = {
+  def close(statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String, timeout: Int = 1000): Unit = {
     try {
       this.webSocket.sendClose(statusCode, reason)
+      latch.await(timeout, TimeUnit.MILLISECONDS)
     } catch {
       case error: Throwable => error.printStackTrace()
     }
