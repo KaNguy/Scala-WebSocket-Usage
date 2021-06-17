@@ -20,9 +20,14 @@ object WebSocketTest extends App {
       println("Connection closed: " + statusCode + ", " + reason)
       super.onClose(webSocket, statusCode, reason)
     }
+
+    override def onError(webSocket: WebSocket, error: Throwable): Unit = {
+      println("Error: " + error)
+      super.onError(webSocket, error)
+    }
   }
 
-  val ws = new ScalaWebSocket("wss://echo.websocket.org", listener)
+  val ws = new ScalaWebSocket(/*"wss://gateway.discord.gg/?v=9&encoding=json"*/"wss://echo.websocket.org", listener)
   ws.send("Message", true)
   ws.close(1000, "None")
 }
