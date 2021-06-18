@@ -15,19 +15,43 @@ import java.nio.ByteBuffer
 
 // Utilities
 import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
+import java.util.ArrayList
 
 // Local
 import scalaWebSocket.WebSocketListener
 import scalaWebSocket.WebSocketDispatch
+import scalaWebSocket.WebSocketEvents
 
 class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
+  private val events: ArrayList[WebSocketEvents] = new ArrayList[WebSocketEvents]()
+
+  def addListener(listener: WebSocketEvents = new Responder()) = {
+    events.add(listener)
+  }
+
+  val theListener = new WebSocketListener() {
+    override def onOpen(webSocket: WebSocket): Unit = {
+      events.get(0).onOpen(webSocket)
+      super.onOpen(webSocket)
+    }
+  }
+
+  private class Responder extends WebSocketEvents {
+    override def onOpen(webSocket: WebSocket): Unit = {
+      println("Connection opened here!")
+    }
+  }
+
+  this.addListener()
+
+
   private val latch: CountDownLatch = new CountDownLatch(1)
 
   private val httpClient: HttpClient = HttpClient.newHttpClient()
-  private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
+  private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), theListener/*listener*/).join()
 
   def send(data: CharSequence, last: Boolean, timeout: Int = 1000): Unit = {
     try {
