@@ -9,14 +9,12 @@ package scalaWebSocket
 import java.net.http.{HttpClient, HttpHeaders, HttpRequest, HttpResponse, WebSocket}
 import java.net.http.WebSocket.{Builder, Listener}
 import java.net.{ConnectException, URI}
-import java.util.concurrent.CompletableFuture
 
 // New I/O
 import java.nio.ByteBuffer
 
 // Utilities
-import java.util.concurrent.{CompletionStage, CountDownLatch, TimeUnit}
-import java.util.EventListener
+import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
 
 // Local
 import scalaWebSocket.WebSocketListener
