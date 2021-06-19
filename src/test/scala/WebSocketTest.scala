@@ -27,7 +27,7 @@ object WebSocketTest extends App {
     }
   }
 
-  val ws = new ScalaWebSocket("wss://echo.websocket.org", listener)
+  val ws = new ScalaWebSocket("wss://echo.websocket.org")
   ws.send("Message", true)
   ws.send("Another message", true)
   ws.send("Final message", true)
