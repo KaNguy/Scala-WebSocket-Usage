@@ -17,37 +17,32 @@ import java.nio.ByteBuffer
 import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
 import java.util.ArrayList
 
+// Reflect
+import scala.reflect.runtime.universe._
+import scala.reflect.ClassTag
+
 // Local
 import scalaWebSocket.WebSocketListener
 import scalaWebSocket.WebSocketDispatch
 import scalaWebSocket.WebSocketEvents
 
-class ScalaWebSocket(var url: String = null, connectionTimeout: Int = 1000) {
+class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
-//  private val events: ArrayList[WebSocketDispatch] = new ArrayList[WebSocketDispatch]()
-//
-//  def addListener(listener: WebSocketDispatch = new Responder()) = {
-//    events.add(listener)
-//  }
-
-  class Responder extends WebSocketDispatch {
+  class Events extends WebSocketDispatch {
     override def onOpen(webSocket: WebSocket): Unit = {
       println("Connection opened here!")
     }
   }
 
-  val responder: Responder = new Responder()
-  val listener: WebSocketListener = new WebSocketListener() {
+  val responder: Events = new Events()
+  val eventListener: WebSocketListener = new WebSocketListener() {
     override def onOpen(webSocket: WebSocket): Unit = {
       responder.onOpen(webSocket)
       super.onOpen(webSocket)
     }
   }
-
-  //this.addListener()
-
 
   private val latch: CountDownLatch = new CountDownLatch(1)
 
