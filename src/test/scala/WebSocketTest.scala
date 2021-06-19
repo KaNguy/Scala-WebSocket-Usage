@@ -28,6 +28,12 @@ object WebSocketTest extends App {
   }
 
   val ws = new ScalaWebSocket("wss://echo.websocket.org")
+  val resp = new ws.Events {
+    override def onOpen(webSocket: WebSocket): Unit = {
+      println("Connection opened on the test file")
+      super.onOpen(webSocket)
+    }
+  }
   ws.send("Message", true)
   ws.send("Another message", true)
   ws.send("Final message", true)
