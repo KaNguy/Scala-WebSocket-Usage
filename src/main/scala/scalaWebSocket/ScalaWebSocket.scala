@@ -22,36 +22,37 @@ import scalaWebSocket.WebSocketListener
 import scalaWebSocket.WebSocketDispatch
 import scalaWebSocket.WebSocketEvents
 
-class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
+class ScalaWebSocket(var url: String = null, connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
-  private val events: ArrayList[WebSocketEvents] = new ArrayList[WebSocketEvents]()
+//  private val events: ArrayList[WebSocketDispatch] = new ArrayList[WebSocketDispatch]()
+//
+//  def addListener(listener: WebSocketDispatch = new Responder()) = {
+//    events.add(listener)
+//  }
 
-  def addListener(listener: WebSocketEvents = new Responder()) = {
-    events.add(listener)
-  }
-
-  val theListener = new WebSocketListener() {
-    override def onOpen(webSocket: WebSocket): Unit = {
-      events.get(0).onOpen(webSocket)
-      super.onOpen(webSocket)
-    }
-  }
-
-  private class Responder extends WebSocketEvents {
+  class Responder extends WebSocketDispatch {
     override def onOpen(webSocket: WebSocket): Unit = {
       println("Connection opened here!")
     }
   }
 
-  this.addListener()
+  val responder: Responder = new Responder()
+  val listener: WebSocketListener = new WebSocketListener() {
+    override def onOpen(webSocket: WebSocket): Unit = {
+      responder.onOpen(webSocket)
+      super.onOpen(webSocket)
+    }
+  }
+
+  //this.addListener()
 
 
   private val latch: CountDownLatch = new CountDownLatch(1)
 
   private val httpClient: HttpClient = HttpClient.newHttpClient()
-  private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), theListener/*listener*/).join()
+  private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
 
   def send(data: CharSequence, last: Boolean, timeout: Int = 1000): Unit = {
     try {
