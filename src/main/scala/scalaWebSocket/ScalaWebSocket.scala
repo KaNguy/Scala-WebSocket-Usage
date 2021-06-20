@@ -23,8 +23,6 @@ import scala.reflect.ClassTag
 
 // Local
 import scalaWebSocket.WebSocketListener
-import scalaWebSocket.WebSocketDispatch
-import scalaWebSocket.WebSocketEvents
 
 class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
