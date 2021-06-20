@@ -30,19 +30,19 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
-  class Events extends WebSocketDispatch {
-    override def onOpen(webSocket: WebSocket): Unit = {
-      println("Connection opened here!")
-    }
-  }
-
-  val responder: Events = new Events()
-  val eventListener: WebSocketListener = new WebSocketListener() {
-    override def onOpen(webSocket: WebSocket): Unit = {
-      responder.onOpen(webSocket)
-      super.onOpen(webSocket)
-    }
-  }
+//  class Events extends WebSocketDispatch {
+//    override def onOpen(webSocket: WebSocket): Unit = {
+//      println("Connection opened here!")
+//    }
+//  }
+//
+//  val responder: Events = new Events()
+//  val eventListener: WebSocketListener = new WebSocketListener() {
+//    override def onOpen(webSocket: WebSocket): Unit = {
+//      responder.onOpen(webSocket)
+//      super.onOpen(webSocket)
+//    }
+//  }
 
   private val latch: CountDownLatch = new CountDownLatch(1)
 
