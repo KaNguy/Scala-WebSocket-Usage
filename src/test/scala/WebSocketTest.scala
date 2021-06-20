@@ -1,11 +1,12 @@
 import scalaWebSocket.ScalaWebSocket
+import scalaWebSocket.WebSocketListener
 
 import java.net.http.WebSocket
 import java.net.http.WebSocket.Listener
 import java.util.concurrent.CompletionStage
 
 object WebSocketTest extends App {
-  val listener: Listener = new Listener {
+  val wsListener = new WebSocketListener {
     override def onOpen(webSocket: WebSocket): Unit = {
       println("WebSocket connection opened")
       super.onOpen(webSocket)
@@ -27,13 +28,7 @@ object WebSocketTest extends App {
     }
   }
 
-  val ws = new ScalaWebSocket("wss://echo.websocket.org")
-  val resp = new ws.Events {
-    override def onOpen(webSocket: WebSocket): Unit = {
-      println("Connection opened on the test file")
-      super.onOpen(webSocket)
-    }
-  }
+  val ws = new ScalaWebSocket("wss://echo.websocket.org", wsListener)
   ws.send("Message", true)
   ws.send("Another message", true)
   ws.send("Final message", true)
