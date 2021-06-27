@@ -6,9 +6,8 @@ package scalaWebSocket
  */
 
 // Networking & web
-import java.net.http.{HttpClient, HttpHeaders, HttpRequest, HttpResponse, WebSocket}
-import java.net.http.WebSocket.{Builder, Listener}
-import java.net.URI
+import java.net.http.WebSocket
+import java.net.http.WebSocket.Listener
 
 // New I/O
 import java.nio.ByteBuffer
