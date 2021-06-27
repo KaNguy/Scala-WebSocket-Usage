@@ -65,27 +65,33 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
     }
   }
 
-  def ping(message: ByteBuffer): CompletableFuture[WebSocket] = {
+  def ping(message: ByteBuffer, timeout: Int = 1000): CompletableFuture[WebSocket] = {
     try {
       this.webSocket.sendPing(message)
+      latch.await(timeout, TimeUnit.MILLISECONDS)
+      new CompletableFuture[WebSocket]()
     } catch {
       case error: Throwable => error.printStackTrace()
       new CompletableFuture[WebSocket]()
     }
   }
 
-  def pong(message: ByteBuffer): CompletableFuture[WebSocket] = {
+  def pong(message: ByteBuffer, timeout: Int = 1000): CompletableFuture[WebSocket] = {
     try {
       this.webSocket.sendPong(message)
+      latch.await(timeout, TimeUnit.MILLISECONDS)
+      new CompletableFuture[WebSocket]()
     } catch {
       case error: Throwable => error.printStackTrace()
         new CompletableFuture[WebSocket]()
     }
   }
 
-  def sendBinary(data: ByteBuffer, last: Boolean): CompletableFuture[WebSocket] = {
+  def sendBinary(data: ByteBuffer, last: Boolean, timeout: Int = 1000): CompletableFuture[WebSocket] = {
     try {
       this.webSocket.sendBinary(data, last)
+      latch.await(timeout, TimeUnit.MILLISECONDS)
+      new CompletableFuture[WebSocket]()
     } catch {
       case error: Throwable => error.printStackTrace()
         new CompletableFuture[WebSocket]()
