@@ -15,11 +15,6 @@ import java.nio.ByteBuffer
 
 // Utilities
 import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
-import java.util.ArrayList
-
-// Reflect
-import scala.reflect.runtime.universe._
-import scala.reflect.ClassTag
 
 // Local
 import scalaWebSocket.WebSocketListener
