@@ -32,5 +32,6 @@ object WebSocketTest extends App {
   ws.send("Message", true)
   ws.send("Another message", true)
   ws.send("Final message", true)
+  ws.interact("SEND", "Interaction", last = true)
   ws.close(1000, "None")
 }
