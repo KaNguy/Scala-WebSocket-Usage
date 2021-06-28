@@ -17,10 +17,12 @@ import java.util.concurrent.CompletionStage
 
 case class WebSocketListener() extends Listener {
   override def onOpen(webSocket: WebSocket): Unit = {
+    webSocket.request(1)
     super.onOpen(webSocket)
   }
 
   override def onText(webSocket: WebSocket, data: CharSequence, last: Boolean): CompletionStage[_] = {
+    webSocket.request(1)
     super.onText(webSocket, data, last)
   }
 
@@ -41,6 +43,7 @@ case class WebSocketListener() extends Listener {
   }
 
   override def onBinary(webSocket: WebSocket, data: ByteBuffer, last: Boolean): CompletionStage[_] = {
+    webSocket.request(1)
     super.onBinary(webSocket, data, last)
   }
 }
