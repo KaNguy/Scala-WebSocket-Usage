@@ -29,6 +29,8 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
   private val httpClient: HttpClient = HttpClient.newHttpClient()
   private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
 
+  val subprotocol: String = webSocket.getSubprotocol
+
   def interact(action: String = null, data: CharSequence = null, message: ByteBuffer = null, statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String = "", last: Boolean = false, timeout: Int = 1000): Unit = {
     action.toUpperCase match {
       case "SEND" => {
