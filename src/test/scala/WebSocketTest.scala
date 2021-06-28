@@ -33,5 +33,6 @@ object WebSocketTest extends App {
   ws.send("Another message", true)
   ws.send("Final message", true)
   ws.interact("SEND", "Interaction", last = true)
+  ws.interact("CLOSE", statusCode = 1000, reason = "Normal closure")
   ws.close(1000, "None")
 }
