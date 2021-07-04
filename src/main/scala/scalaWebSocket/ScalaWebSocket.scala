@@ -31,6 +31,16 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
 
   val subprotocol: String = webSocket.getSubprotocol
 
+  /**
+   * Makes an interaction depending on the action
+   * @param action One of the valid WebSocket actions which are SEND, CLOSE, PING, PONG, BINARY
+   * @param data Works for the SEND action (the BINARY action has not been tested)
+   * @param message Works for the PING and PONG actions
+   * @param statusCode Status code for closure
+   * @param reason Reason for closure
+   * @param last For WebSocket messages
+   * @param timeout Timeout for latching
+   */
   def interact(action: String = null, data: CharSequence = null, message: ByteBuffer = null, statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String = "", last: Boolean = false, timeout: Int = 1000): Unit = {
     action.toUpperCase match {
       case "SEND" => {
