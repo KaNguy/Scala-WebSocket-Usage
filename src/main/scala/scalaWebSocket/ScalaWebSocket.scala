@@ -111,6 +111,11 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
     }
   }
 
+  /**
+   * Checks if the URL has ws:// or wss://
+   * @param url URL
+   * @return Boolean whether the URL has the protocol or not
+   */
   private def hasWebSocketProtocol(url: String): Boolean = {
     val webSocketURL: String = url.toLowerCase.trim.replaceAll(" ", "")
     if (webSocketURL.substring(0, 2).equals("ws") || webSocketURL.substring(0, 3).equals("wss")) {
