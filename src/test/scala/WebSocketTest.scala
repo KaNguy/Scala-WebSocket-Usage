@@ -3,6 +3,8 @@ import scalaWebSocket.WebSocketListener
 
 import java.net.http.WebSocket
 import java.net.http.WebSocket.Listener
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.CompletionStage
 
 object WebSocketTest extends App {
@@ -25,6 +27,11 @@ object WebSocketTest extends App {
     override def onError(webSocket: WebSocket, error: Throwable): Unit = {
       println("Error: " + error)
       super.onError(webSocket, error)
+    }
+
+    override def onBinary(webSocket: WebSocket, data: ByteBuffer, last: Boolean): CompletionStage[_] = {
+      println("Decoded data: " + StandardCharsets.UTF_8.decode(data).toString)
+      super.onBinary(webSocket, data, last)
     }
   }
 
