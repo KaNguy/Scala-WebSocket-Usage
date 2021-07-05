@@ -11,8 +11,8 @@ import java.net.http.WebSocket.{Builder, Listener}
 import java.net.{ConnectException, URI}
 
 // New I/O
-import java.nio.ByteBuffer
-import java.nio.CharBuffer
+import java.nio.{ByteBuffer, CharBuffer}
+import java.nio.charset.StandardCharsets
 
 // Utilities
 import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
@@ -52,8 +52,7 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
       } case "PONG" => {
         this.webSocket.sendPong(message)
       } case "BINARY" => {
-        // Sends binaries, untested
-        this.webSocket.sendBinary(ByteBuffer.allocate(CharBuffer.wrap(data).length() * Character.BYTES), last)
+        this.webSocket.sendBinary(ByteBuffer.wrap(data.toString.getBytes(StandardCharsets.UTF_8)), last)
       }
       case _ => ()
     }
