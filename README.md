@@ -1,11 +1,11 @@
 # Scala WebSocket Usage
 <div>
   <p>
-    <a href="https://github.com/KaNguy/Scala-WebSocket-Usage/pulls"><img src="https://shields.io/github/issues-pr/KaNguy/HTTPS-Requests-Scala?color=da301b" alt="PRs" /></a>
-    <a><img src="https://shields.io/github/languages/code-size/KaNguy/Scala-WebSocket-Usage?color=da301b" /></a>
-    <a><img src="https://shields.io/tokei/lines/github/KaNguy/Scala-WebSocket-Usage" /></a>
-    <a><img src="https://img.shields.io/github/last-commit/KaNguy/Scala-WebSocket-Usage?color=007ace"></a>
-    <a href="LICENSE.md"><img src="https://img.shields.io/github/license/KaNguy/Scala-WebSocket-Usage?color=007ace" alt="License" /></a>
+    <a href="https://github.com/KiyonoKara/Scala-WebSocket-Usage/pulls"><img src="https://shields.io/github/issues-pr/KiyonoKara/HTTPS-Requests-Scala?color=da301b" alt="PRs" /></a>
+    <a><img src="https://shields.io/github/languages/code-size/KiyonoKara/Scala-WebSocket-Usage?color=da301b" /></a>
+    <a><img src="https://shields.io/tokei/lines/github/KiyonoKara/Scala-WebSocket-Usage" /></a>
+    <a><img src="https://img.shields.io/github/last-commit/KiyonoKara/Scala-WebSocket-Usage?color=007ace"></a>
+    <a href="LICENSE.md"><img src="https://img.shields.io/github/license/KiyonoKara/Scala-WebSocket-Usage?color=007ace" alt="License" /></a>
   </p>
 </div>
 
