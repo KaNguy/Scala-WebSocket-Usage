@@ -1,7 +1,7 @@
 package scalaWebSocket
 
 /**
- * Created by KaNguy - 06/14/2021
+ * Created by KiyonoKara - 06/14/2021
  * File scalaWebSocket.ScalaWebSocket.scala
  */
 
