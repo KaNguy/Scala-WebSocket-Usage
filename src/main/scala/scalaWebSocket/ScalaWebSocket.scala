@@ -6,19 +6,18 @@ package scalaWebSocket
  */
 
 // Networking & Web
-import java.net.http.{HttpClient, HttpHeaders, HttpRequest, HttpResponse, WebSocket}
-import java.net.http.WebSocket.{Builder, Listener}
-import java.net.{ConnectException, URI}
+import java.net.URI
+import java.net.http.WebSocket.Listener
+import java.net.http.{HttpClient, WebSocket}
 
 // New I/O
-import java.nio.{ByteBuffer, CharBuffer}
+import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 
 // Utilities
-import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
+import java.util.concurrent.{CompletableFuture, CountDownLatch, TimeUnit}
 
 // Local
-import scalaWebSocket.WebSocketListener
 
 class ScalaWebSocket(var url: String = null, var listener: Listener = WebSocketListener(), connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
