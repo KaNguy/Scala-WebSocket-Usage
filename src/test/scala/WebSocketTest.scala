@@ -38,10 +38,27 @@ object WebSocketTest extends App {
   // Test WebSocket connection and interaction with Postman Websockets
   // https://www.postman.com/postman/workspace/websockets/overview
   val ws = new ScalaWebSocket("wss://ws.postman-echo.com/raw", wsListener)
-  ws.send("Message", true)
-  ws.send("Another message", true)
-  ws.send("Final message", true)
-  ws.interact("SEND", "Interaction", last = true)
-  ws.interact("CLOSE", statusCode = 1000, reason = "Normal closure")
-  ws.close(1000, "None")
+
+  // Messages in one part
+  ws.send("Message", last = true)
+  ws.send("Another message", last = true)
+  ws.send("Final message", last = true)
+
+  // Multi-part message
+  ws.send("Part 1", last = false)
+  ws.send(" & ", last = false)
+  ws.send("Part 2", last = true)
+
+  // Ping & Pong
+  ws.ping(ByteBuffer.wrap("Ping".getBytes(StandardCharsets.UTF_8)))
+  ws.pong(ByteBuffer.wrap("Pong".getBytes(StandardCharsets.UTF_8)))
+
+  // Close connection
+  ws.close(WebSocket.NORMAL_CLOSURE, "None")
+
+  // Rejoin
+  ws.join()
+  // Sending binaries
+  ws.sendBinary(ByteBuffer.wrap("[Data]".getBytes(StandardCharsets.UTF_8)), last = true)
+  ws.close(WebSocket.NORMAL_CLOSURE, "None")
 }
