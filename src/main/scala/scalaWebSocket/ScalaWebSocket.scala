@@ -6,57 +6,31 @@ package scalaWebSocket
  */
 
 // Networking & Web
-import java.net.http.{HttpClient, HttpHeaders, HttpRequest, HttpResponse, WebSocket}
-import java.net.http.WebSocket.{Builder, Listener}
-import java.net.{ConnectException, URI}
+import java.net.URI
+import java.net.http.WebSocket.Listener
+import java.net.http.{HttpClient, WebSocket}
 
 // New I/O
-import java.nio.{ByteBuffer, CharBuffer}
-import java.nio.charset.StandardCharsets
+import java.nio.ByteBuffer
 
 // Utilities
-import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch, TimeUnit}
+import java.util.concurrent.{CompletableFuture, CountDownLatch, TimeUnit}
 
 // Local
-import scalaWebSocket.WebSocketListener
 
-class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
+class ScalaWebSocket(var url: String = "", var listener: Listener = WebSocketListener()) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
   private val latch: CountDownLatch = new CountDownLatch(1)
 
   private val httpClient: HttpClient = HttpClient.newHttpClient()
-  private var webSocket: WebSocket = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener).join()
+  private val webSocketBuild: CompletableFuture[WebSocket] = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener)
+  private var webSocket: WebSocket = webSocketBuild.join()
 
-  val subprotocol: String = webSocket.getSubprotocol
-
-  /**
-   * Makes an interaction depending on the action
-   * @param action One of the valid WebSocket actions which are SEND, CLOSE, PING, PONG, BINARY
-   * @param data Works for the SEND action (the BINARY action has not been tested)
-   * @param message Works for the PING and PONG actions
-   * @param statusCode Status code for closure
-   * @param reason Reason for closure
-   * @param last For WebSocket messages
-   * @param timeout Timeout for latching
-   */
-  def interact(action: String = null, data: CharSequence = null, message: ByteBuffer = null, statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String = "", last: Boolean = false, timeout: Int = 1000): Unit = {
-    action.toUpperCase match {
-      case "SEND" => {
-        this.webSocket.sendText(data, last)
-      } case "CLOSE" => {
-        this.webSocket.sendClose(statusCode, reason)
-      } case "PING" => {
-        this.webSocket.sendPing(message)
-      } case "PONG" => {
-        this.webSocket.sendPong(message)
-      } case "BINARY" => {
-        this.webSocket.sendBinary(ByteBuffer.wrap(data.toString.getBytes(StandardCharsets.UTF_8)), last)
-      }
-      case _ => ()
-    }
-    latch.await(timeout, TimeUnit.MILLISECONDS)
+  def join(): Unit = {
+    val newWSBuild = this.httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener)
+    this.webSocket = newWSBuild.join()
   }
 
   def send(data: CharSequence, last: Boolean, timeout: Int = 1000): Unit = {
@@ -117,10 +91,6 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
    */
   private def hasWebSocketProtocol(url: String): Boolean = {
     val webSocketURL: String = url.toLowerCase.trim.replaceAll(" ", "")
-    if (webSocketURL.substring(0, 2).equals("ws") || webSocketURL.substring(0, 3).equals("wss")) {
-      true
-    } else {
-      false
-    }
+    webSocketURL.startsWith("ws") || webSocketURL.startsWith("wss")
   }
 }

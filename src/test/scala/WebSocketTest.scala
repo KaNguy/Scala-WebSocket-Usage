@@ -1,8 +1,6 @@
-import scalaWebSocket.ScalaWebSocket
-import scalaWebSocket.WebSocketListener
+import scalaWebSocket.{ScalaWebSocket, WebSocketListener}
 
 import java.net.http.WebSocket
-import java.net.http.WebSocket.Listener
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.CompletionStage
@@ -20,7 +18,9 @@ object WebSocketTest extends App {
     }
 
     override def onClose(webSocket: WebSocket, statusCode: Int, reason: String): CompletionStage[_] = {
-      println("Connection closed: " + statusCode + ", " + reason)
+      var formattedReason: String = reason
+      if (reason.isEmpty) formattedReason = "No reason"
+      println("Connection closed: " + statusCode + ", " + formattedReason)
       super.onClose(webSocket, statusCode, reason)
     }
 
@@ -35,11 +35,30 @@ object WebSocketTest extends App {
     }
   }
 
-  val ws = new ScalaWebSocket("wss://echo.websocket.org", wsListener)
-  ws.send("Message", true)
-  ws.send("Another message", true)
-  ws.send("Final message", true)
-  ws.interact("SEND", "Interaction", last = true)
-  ws.interact("CLOSE", statusCode = 1000, reason = "Normal closure")
-  ws.close(1000, "None")
+  // Test WebSocket connection and interaction with Postman Websockets
+  // https://www.postman.com/postman/workspace/websockets/overview
+  val ws = new ScalaWebSocket("wss://ws.postman-echo.com/raw", wsListener)
+
+  // Messages in one part
+  ws.send("Message", last = true)
+  ws.send("Another message", last = true)
+  ws.send("Final message", last = true)
+
+  // Multi-part message
+  ws.send("Part 1", last = false)
+  ws.send(" & ", last = false)
+  ws.send("Part 2", last = true)
+
+  // Ping & Pong
+  ws.ping(ByteBuffer.wrap("Ping".getBytes(StandardCharsets.UTF_8)))
+  ws.pong(ByteBuffer.wrap("Pong".getBytes(StandardCharsets.UTF_8)))
+
+  // Close connection
+  ws.close(WebSocket.NORMAL_CLOSURE, "None")
+
+  // Rejoin
+  ws.join()
+  // Sending binaries
+  ws.sendBinary(ByteBuffer.wrap("[Data]".getBytes(StandardCharsets.UTF_8)), last = true)
+  ws.close(WebSocket.NORMAL_CLOSURE, "None")
 }
