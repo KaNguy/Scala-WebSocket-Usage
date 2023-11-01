@@ -1,8 +1,6 @@
-import scalaWebSocket.ScalaWebSocket
-import scalaWebSocket.WebSocketListener
+import scalaWebSocket.{ScalaWebSocket, WebSocketListener}
 
 import java.net.http.WebSocket
-import java.net.http.WebSocket.Listener
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.CompletionStage
@@ -20,7 +18,9 @@ object WebSocketTest extends App {
     }
 
     override def onClose(webSocket: WebSocket, statusCode: Int, reason: String): CompletionStage[_] = {
-      println("Connection closed: " + statusCode + ", " + reason)
+      var formattedReason: String = reason
+      if (reason.isEmpty) formattedReason = "No reason"
+      println("Connection closed: " + statusCode + ", " + formattedReason)
       super.onClose(webSocket, statusCode, reason)
     }
 
@@ -35,7 +35,9 @@ object WebSocketTest extends App {
     }
   }
 
-  val ws = new ScalaWebSocket("wss://echo.websocket.org", wsListener)
+  // Test WebSocket connection and interaction with Postman Websockets
+  // https://www.postman.com/postman/workspace/websockets/overview
+  val ws = new ScalaWebSocket("wss://ws.postman-echo.com/raw", wsListener)
   ws.send("Message", true)
   ws.send("Another message", true)
   ws.send("Final message", true)
