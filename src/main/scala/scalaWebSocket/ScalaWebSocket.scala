@@ -116,10 +116,6 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = WebSocketL
    */
   private def hasWebSocketProtocol(url: String): Boolean = {
     val webSocketURL: String = url.toLowerCase.trim.replaceAll(" ", "")
-    if (webSocketURL.substring(0, 2).equals("ws") || webSocketURL.substring(0, 3).equals("wss")) {
-      true
-    } else {
-      false
-    }
+    webSocketURL.startsWith("ws") || webSocketURL.startsWith("wss")
   }
 }
