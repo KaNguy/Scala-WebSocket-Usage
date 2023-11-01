@@ -25,7 +25,7 @@ class ScalaWebSocket(var url: String = "", var listener: Listener = WebSocketLis
   private val latch: CountDownLatch = new CountDownLatch(1)
 
   private val httpClient: HttpClient = HttpClient.newHttpClient()
-  private var webSocketBuild: CompletableFuture[WebSocket] = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener)
+  private val webSocketBuild: CompletableFuture[WebSocket] = httpClient.newWebSocketBuilder().buildAsync(URI.create(url), listener)
   private var webSocket: WebSocket = webSocketBuild.join()
 
   def join(): Unit = {
