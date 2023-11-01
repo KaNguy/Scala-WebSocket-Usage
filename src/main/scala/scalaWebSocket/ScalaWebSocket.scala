@@ -43,17 +43,16 @@ class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSoc
    */
   def interact(action: String = null, data: CharSequence = null, message: ByteBuffer = null, statusCode: Int = WebSocket.NORMAL_CLOSURE, reason: String = "", last: Boolean = false, timeout: Int = 1000): Unit = {
     action.toUpperCase match {
-      case "SEND" => {
+      case "SEND" =>
         this.webSocket.sendText(data, last)
-      } case "CLOSE" => {
+      case "CLOSE" =>
         this.webSocket.sendClose(statusCode, reason)
-      } case "PING" => {
+      case "PING" =>
         this.webSocket.sendPing(message)
-      } case "PONG" => {
+      case "PONG" =>
         this.webSocket.sendPong(message)
-      } case "BINARY" => {
+      case "BINARY" =>
         this.webSocket.sendBinary(ByteBuffer.wrap(data.toString.getBytes(StandardCharsets.UTF_8)), last)
-      }
       case _ => ()
     }
     latch.await(timeout, TimeUnit.MILLISECONDS)
