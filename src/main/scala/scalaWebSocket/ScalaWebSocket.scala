@@ -20,7 +20,7 @@ import java.util.concurrent.{CompletableFuture, CompletionStage, CountDownLatch,
 // Local
 import scalaWebSocket.WebSocketListener
 
-class ScalaWebSocket(var url: String = null, var listener: Listener = new WebSocketListener(), connectionTimeout: Int = 1000) {
+class ScalaWebSocket(var url: String = null, var listener: Listener = WebSocketListener(), connectionTimeout: Int = 1000) {
   private val hasWSProtocol: Boolean = this.hasWebSocketProtocol(url)
   if (!hasWSProtocol) throw new Error("The URL does not have a WebSocket protocol")
 
