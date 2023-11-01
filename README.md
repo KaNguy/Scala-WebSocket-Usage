@@ -15,4 +15,5 @@ A simple implementation that wraps `java.net.http.WebSocket` for connecting to `
 This project is a WebSocket implementation using JVM's native modules which also include `java.net.http.WebSocket.Builder` and `java.net.http.WebSocket.Listener`. 
 
 ## License
+
 [MIT](LICENSE.md)
